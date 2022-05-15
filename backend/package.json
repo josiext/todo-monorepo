@@ -5,11 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node index"
+    "dev": "nodemon index"
   },
   "author": "José Núñez",
   "license": "ISC",
   "dependencies": {
     "koa": "2.13.4"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.16"
   }
 }
