@@ -1,23 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import "./App.css";
-
-interface Todo {
-  id: string;
-  label: string;
-}
-
-const TodoStorage = {
-  findAll: async () => [],
-  create: async (item: Todo) => item,
-  remove: async (id: Todo["id"]) => ({ id, label: "todo" }),
-  update: async (item: Partial<Todo>) => ({
-    id: "231",
-    label: "todo",
-    ...item,
-  }),
-};
+import TodoStorage from "./api/index";
+import { Todo } from "types";
 
 export default function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -34,7 +19,7 @@ export default function App() {
         setTimeout(() => {
           setShowError(false);
           setError(null);
-        }, 800);
+        }, 2000);
       });
   }, []);
 
@@ -43,12 +28,11 @@ export default function App() {
       e.preventDefault();
 
       const todoToCreate = {
-        id: uuidv4(),
         label: newTodo,
       };
-      await TodoStorage.create(todoToCreate);
+      const created = await TodoStorage.create(todoToCreate);
 
-      setTodos((prev) => [todoToCreate, ...prev]);
+      setTodos((prev) => [created, ...prev]);
       setNewTodo("");
     } catch (e) {
       setError(e);
@@ -56,6 +40,7 @@ export default function App() {
   };
 
   const handleRemoveTodo = (todo: Todo) => {
+    TodoStorage.remove(todo.id).catch((e) => setError(e));
     const newTodos = todos.filter((item) => item.id !== todo.id);
     setTodos(newTodos);
   };
