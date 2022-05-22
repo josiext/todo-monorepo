@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-import "./App.css";
+import styles from "./App.module.css";
 import TodoStorage from "./api/index";
 import { Todo } from "types";
 
@@ -51,20 +51,19 @@ export default function App() {
   };
 
   return (
-    <>
-      <header>
-        <h1>Todo Task</h1>
-      </header>
-
-      <main>
-        <article>
-          <section>
+    <div className={styles.container}>
+      <main className={styles.app}>
+        <>
+          <header className={styles.header}>
+            <h1 className={styles.title}>Todo Task</h1>
+          </header>
+          <section className={styles.todoFormContainer}>
             <form onSubmit={handleTodoForm}>
               <input
                 required
                 minLength={1}
                 type="text"
-                placeholder="New task"
+                placeholder="New todo..."
                 onChange={(e) => setNewTodo(e.target.value)}
                 value={newTodo}
               />
@@ -72,7 +71,7 @@ export default function App() {
             </form>
           </section>
 
-          <section>
+          <section className={styles.todoList}>
             {todos.map((item) => (
               <TodoItem
                 key={item.id}
@@ -82,27 +81,16 @@ export default function App() {
               />
             ))}
           </section>
-        </article>
+
+          {error && (
+            <Error
+              message="An error has occurred."
+              onClose={() => setError(null)}
+            />
+          )}
+        </>
       </main>
-      {error && (
-        <section
-          style={{
-            backgroundColor: "red",
-            padding: "16px",
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            color: "white",
-          }}
-        >
-          <header style={{ fontWeight: "bold", fontSize: "18px" }}>
-            Error!!!
-          </header>
-          <p>{String(error)}</p>
-          <button onClick={() => setError(null)}>Close</button>
-        </section>
-      )}
-    </>
+    </div>
   );
 }
 
@@ -150,16 +138,41 @@ function TodoItem({
     );
 
   return (
-    <section style={{ display: "flex", gap: "6px" }}>
-      <header>{todo.label}</header>
-      <button
-        onClick={() => {
-          setEditMode(true);
-        }}
-      >
-        Edit
-      </button>
-      <button onClick={() => onRemove(todo)}>Remove</button>
+    <section style={{ flex: 1, display: "flex", gap: "6px" }}>
+      <header style={{ flex: 2 }}>{todo.label}</header>
+
+      <div style={{ flex: 1, display: "flex", gap: "0.4em" }}>
+        <button
+          onClick={() => {
+            setEditMode(true);
+          }}
+          style={{ padding: "0.2em" }}
+        >
+          Edit
+        </button>
+        <button onClick={() => onRemove(todo)} style={{ padding: "0.2em" }}>
+          Remove
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function Error({ message, onClose }: { message: string; onClose: () => void }) {
+  return (
+    <section
+      style={{
+        backgroundColor: "red",
+        padding: "16px",
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+        color: "white",
+      }}
+    >
+      <header style={{ fontWeight: "bold", fontSize: "18px" }}>Error!!!</header>
+      <p>{message}</p>
+      <button onClick={onClose}>Close</button>
     </section>
   );
 }
