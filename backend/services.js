@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 const todosCache = [];
 
 const findAll = () => {
@@ -8,7 +10,7 @@ const create = (data) => {
   const { label } = data;
 
   const newTodo = {
-    id: String(+new Date()),
+    id: uuidv4(),
     label,
     updatedAt: new Date(),
     createdAt: new Date(),
