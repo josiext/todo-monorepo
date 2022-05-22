@@ -3,9 +3,7 @@ import cors from "@fastify/cors";
 
 import TodoService from "./services.js";
 
-const fastify = Fastify({
-  logger: true,
-});
+const fastify = Fastify();
 
 const PostSchema = {
   body: {
