@@ -49,7 +49,7 @@ async function todoRoute(fastify, options) {
   });
 
   fastify.patch("/todo", PatchSchema, async (request, reply) => {
-    return TodoService.update(request.body);
+    return TodoService.update(request.body.id, request.body.data);
   });
 
   fastify.delete("/todo", DeleteSchema, async (request, reply) => {

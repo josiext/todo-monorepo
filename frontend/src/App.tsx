@@ -8,16 +8,13 @@ export default function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>("");
   const [error, setError] = useState<unknown>(null);
-  const [showError, setShowError] = useState<boolean>(false);
 
   useEffect(() => {
     TodoStorage.findAll()
       .then((data) => setTodos(data))
       .catch((err) => {
-        setShowError(true);
         setError(err);
         setTimeout(() => {
-          setShowError(false);
           setError(null);
         }, 2000);
       });
@@ -49,6 +46,7 @@ export default function App() {
     const newTodos = todos.map((item) =>
       item.id === todo.id ? { ...item, ...todo } : item
     );
+    TodoStorage.update(todo.id, todo).catch((e) => setError(e));
     setTodos(newTodos);
   };
 
@@ -86,7 +84,7 @@ export default function App() {
           </section>
         </article>
       </main>
-      {showError && error && (
+      {error && (
         <section
           style={{
             backgroundColor: "red",
@@ -101,6 +99,7 @@ export default function App() {
             Error!!!
           </header>
           <p>{String(error)}</p>
+          <button onClick={() => setError(null)}>Close</button>
         </section>
       )}
     </>
