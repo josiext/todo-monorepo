@@ -21,10 +21,6 @@ const update = (id, data) => {
 };
 
 const remove = (id) => {
-  console.log(id);
-  console.log(todosCache[0].id);
-  console.log(todosCache[0].id === id);
-
   const todos = todosCache.filter((item) => item.id !== id);
   todosCache = todos;
   return todosCache;
