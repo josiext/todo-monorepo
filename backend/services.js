@@ -1,29 +1,41 @@
-let todosCache = [];
-let counter = 0;
+const todosCache = [];
 
 const findAll = () => {
-  return todosCache;
+  return todosCache.sort((a, b) => b.createdAt - a.createdAt);
 };
 
 const create = (data) => {
-  counter++;
-  const newTodo = { ...data, id: counter };
+  const { label } = data;
+
+  const newTodo = {
+    id: String(+new Date()),
+    label,
+    updatedAt: new Date(),
+    createdAt: new Date(),
+  };
+
   todosCache.push(newTodo);
+
   return newTodo;
 };
 
 const update = (id, data) => {
-  const todos = todosCache.map((item) =>
-    item.id === id ? { ...item, ...data } : item
-  );
-  todosCache = todos;
-  return todosCache;
+  const { label } = data;
+
+  const todo = todosCache.find((item) => item.id === id);
+  todo.label = label;
+  todo.updatedAt = new Date();
+
+  return todo;
 };
 
 const remove = (id) => {
-  const todos = todosCache.filter((item) => item.id !== id);
-  todosCache = todos;
-  return todosCache;
+  const todoToRemoveIndex = todosCache.findIndex((item) => item.id === id);
+  const todoRemoved = todosCache[todoToRemoveIndex];
+
+  if (todoToRemoveIndex > -1) todosCache.splice(todoToRemoveIndex, 1);
+
+  return todoRemoved;
 };
 
 export default {
