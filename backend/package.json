@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index"
+    "dev": "nodemon src/index"
   },
   "author": "José Núñez",
   "license": "ISC",
