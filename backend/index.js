@@ -53,7 +53,7 @@ async function todoRoute(fastify, options) {
   });
 
   fastify.delete("/todo", DeleteSchema, async (request, reply) => {
-    return TodoService.remove(request.body);
+    return TodoService.remove(request.body.id);
   });
 }
 

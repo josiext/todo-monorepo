@@ -1,19 +1,18 @@
 let todosCache = [];
+let counter = 0;
 
 const findAll = () => {
-  console.log(todosCache);
   return todosCache;
 };
 
 const create = (data) => {
-  console.log(data);
-  todosCache.push({ ...data, id: String(+new Date()) });
-  return data;
+  counter++;
+  const newTodo = { ...data, id: counter };
+  todosCache.push(newTodo);
+  return newTodo;
 };
 
 const update = (id, data) => {
-  console.log(data);
-
   const todos = todosCache.map((item) =>
     item.id === id ? { ...item, ...data } : item
   );
@@ -23,6 +22,8 @@ const update = (id, data) => {
 
 const remove = (id) => {
   console.log(id);
+  console.log(todosCache[0].id);
+  console.log(todosCache[0].id === id);
 
   const todos = todosCache.filter((item) => item.id !== id);
   todosCache = todos;
